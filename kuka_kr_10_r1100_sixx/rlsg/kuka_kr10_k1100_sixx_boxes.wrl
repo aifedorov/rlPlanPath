@@ -1,0 +1,15 @@
+#VRML V2.0 utf8
+Transform {
+	children [
+		DEF kuka_kr10_k1100_sixx Transform {
+			children [
+				Inline {
+					url "kuka_kr10_k1100_sixx/kuka_kr10_k1100_sixx.wrl"
+				}
+			]
+		}
+		DEF boxes Inline {
+			url "ball.wrl"
+		}
+	]
+}
