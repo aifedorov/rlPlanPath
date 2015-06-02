@@ -29,6 +29,7 @@ endif(CMAKE_SIZEOF_VOID_P EQUAL 4)
 		PlannerModel.h
 		Thread.h
 		Viewer.h
+                API.h
 	)
 	
 	set(
@@ -42,6 +43,7 @@ endif(CMAKE_SIZEOF_VOID_P EQUAL 4)
 		rlPlanDemo.cpp
 		Thread.cpp
 		Viewer.cpp
+                API.cpp
 	)
 	
 	qt4_wrap_cpp(

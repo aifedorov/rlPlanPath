@@ -29,12 +29,12 @@
 			<scene href="../rlsg/kuka_kr10_k1100_sixx_boxes.xml"/>
 		</model>
 		<start>
-			<q unit="deg">0</q>
-			<q unit="deg">-144</q>
-			<q unit="deg">154</q>
-			<q unit="deg">0</q>
-			<q unit="deg">-83</q>
-			<q unit="deg">180</q>
+			<q unit="deg">21</q>
+			<q unit="deg">-22</q>
+			<q unit="deg">5</q>
+			<q unit="deg">141</q>
+			<q unit="deg">98</q>
+			<q unit="deg">186</q>
 		</start>
 		<viewer>
 			<background>

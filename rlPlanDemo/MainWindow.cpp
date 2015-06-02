@@ -285,7 +285,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WFlags f) :
 	}
 	else
 	{
-		this->load(this->filename);
+        this->load(this->filename);
 	}
 }
 
@@ -895,6 +895,11 @@ MainWindow::load(const QString& filename)
 	rl::xml::Object start = path.eval("//start//q");
 	this->start = boost::make_shared< rl::math::Vector >(start.getNodeNr());
 	
+//    for (std::size_t i = 0; i < this->planner->model->getDof(); ++i)
+//    {
+//                start(i) = boost::lexical_cast< rl::math::Real >(argv[i + 3]);
+//    }
+
 	for (int i = 0; i < start.getNodeNr(); ++i)
 	{
 		(*this->start)(i) = std::atof(start.getNodeTab(i).getContent().c_str());
@@ -911,20 +916,20 @@ MainWindow::load(const QString& filename)
 	*this->q = *this->start;
 	
 	rl::xml::Object goal = path.eval("//goal//q");
-	this->goal = boost::make_shared< rl::math::Vector >(goal.getNodeNr());
-	
-	for (int i = 0; i < goal.getNodeNr(); ++i)
-	{
-		(*this->goal)(i) = std::atof(goal.getNodeTab(i).getContent().c_str());
+    this->goal = boost::make_shared< rl::math::Vector >(goal.getNodeNr());
+
+    for (int i = 0; i < goal.getNodeNr(); ++i)
+    {
+        (*this->goal)(i) = std::atof(goal.getNodeTab(i).getContent().c_str());
 		
-		if (goal.getNodeTab(i).hasAttribute("unit"))
-		{
-			if ("deg" == goal.getNodeTab(i).getAttribute("unit").getValue())
-			{
-				(*this->goal)(i) *= rl::math::DEG2RAD;
-			}
-		}
-	}
+        if (goal.getNodeTab(i).hasAttribute("unit"))
+        {
+            if ("deg" == goal.getNodeTab(i).getAttribute("unit").getValue())
+            {
+                (*this->goal)(i) *= rl::math::DEG2RAD;
+            }
+        }
+    }
 	
 	rl::xml::Object sigma = path.eval("//sigma//q");
 	this->sigma = boost::make_shared< rl::math::Vector >(sigma.getNodeNr());
@@ -1597,6 +1602,9 @@ MainWindow::load(const QString& filename)
 	
 	this->configurationModel->invalidate();
 	this->plannerModel->invalidate();
+
+    //autostart
+    this->startThread();
 	
 	if (!this->wait)
 	{
@@ -1807,4 +1815,30 @@ MainWindow::toggleView(const bool& doOn)
 			(*i)->viewer = NULL;
 		}
 	}
+}
+
+//for the api
+//    rl::math::Vector a(6);
+//    a << 0, -144, 154, 0, -83, 180;
+
+void
+MainWindow::initStartPos(rl::math::Vector start)
+{
+    this->start = boost::make_shared< rl::math::Vector >(this->planner->model->getDof());
+
+    for (int i = 0; i < this->planner->model->getDof(); ++i)
+    {
+        (*this->start)(i) = start(i) * rl::math::DEG2RAD;
+    }
+}
+
+void
+MainWindow::initGoalPos(rl::math::Vector goal)
+{
+    this->goal = boost::make_shared< rl::math::Vector >(this->planner->model->getDof());
+
+    for (int i = 0; i < this->planner->model->getDof(); ++i)
+    {
+        (*this->goal)(i) = goal(i) * rl::math::DEG2RAD;
+    }
 }

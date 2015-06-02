@@ -266,28 +266,21 @@ Thread::run()
 	if (solved)
 	{
 		MainWindow::instance()->planner->getPath(path);
+        MainWindow::instance()->planner->getPath(MainWindow::instance()->path_output);
 		
 		rl::plan::VectorList::iterator i = path.begin();
-		rl::plan::VectorList::iterator j = ++path.begin();
+        rl::plan::VectorList::iterator j = MainWindow::instance()->path_output.begin();
+        //rl::plan::VectorList::iterator j = ++path.begin();
 		
 		rl::math::Real length = 0;
 		
-		for (; i != path.end() && j != path.end(); ++i, ++j)
+        //for (; i != path.end() && j != path.end(); ++i, ++j)
+        for (; i != path.end() && j != MainWindow::instance()->path_output.end(); ++i, ++j)
 		{
-			length += MainWindow::instance()->model->distance(*i, *j);
-			benchmark << std::endl;
-			benchmark << "------";
-			benchmark << std::endl;
-			benchmark << *i * 180/ M_PI;
-			benchmark << std::endl;
-			benchmark << "!!!!!!";
-			benchmark << std::endl;
-			benchmark << *j * 180/ M_PI;
-			benchmark << std::endl;
-			benchmark << "------";
-			benchmark << std::endl;
+            //length += MainWindow::instance()->model->distance(*i, *j);
+            *j << *i * 180/ M_PI;
 		}
-		
+
 		benchmark << ",";
 		benchmark << length;
 	}
@@ -305,7 +298,7 @@ Thread::run()
 	
 	if (solved)
 	{
-		if (this->swept)
+        if (this->swept)
 		{
 			this->drawSweptVolume(path);
 			return;

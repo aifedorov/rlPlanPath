@@ -48,10 +48,10 @@ main(int argc, char** argv)
 		qRegisterMetaType< rl::plan::VectorList >("rl::plan::VectorList");
 		
 		QObject::connect(&application, SIGNAL(lastWindowClosed()), &application, SLOT(quit()));
-		
-		MainWindow::instance()->show();
-		
-		return application.exec();
+
+        MainWindow::instance()->show();
+
+        return application.exec();
 	}
 	catch (const std::exception& e)
 	{

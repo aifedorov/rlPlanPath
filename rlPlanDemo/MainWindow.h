@@ -118,7 +118,9 @@ public:
 	boost::shared_ptr< rl::plan::Verifier > verifier2;
 	
 	Viewer* viewer;
-	
+
+    rl::plan::VectorList path_output;
+
 public slots:
 	void eval();
 	
@@ -155,6 +157,12 @@ public slots:
 	void togglePlanner();
 	
 	void toggleView(const bool& doOn);
+
+    void initStartPos(rl::math::Vector start);
+
+    void initGoalPos(rl::math::Vector goal);
+
+    void load(const QString& filename);
 	
 protected:
 	MainWindow(QWidget* parent = NULL, Qt::WindowFlags f = 0);
@@ -168,7 +176,7 @@ private:
 	
 	void init();
 	
-	void load(const QString& filename);
+    //void load(const QString& filename);
 	
 	ConfigurationDelegate* configurationDelegate;
 	
