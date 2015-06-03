@@ -19,6 +19,8 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 4)
         add_definitions(-DEIGEN_DONT_ALIGN)
 endif(CMAKE_SIZEOF_VOID_P EQUAL 4)
 
+set( QT_USE_XML TRUE)
+include( ${QT_USE_FILE} )
 
         set(
                 SRCS
@@ -55,5 +57,7 @@ endif(CMAKE_SIZEOF_VOID_P EQUAL 4)
                 /usr/lib/libode.so
                 /usr/lib/libsolid.so
                 /usr/lib/x86_64-linux-gnu/mesa/libGL.so
+                /usr/lib/x86_64-linux-gnu/libQtXml.so
+
 
         )
