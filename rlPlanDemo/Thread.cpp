@@ -270,16 +270,16 @@ Thread::run()
 		
 		rl::plan::VectorList::iterator i = path.begin();
         rl::plan::VectorList::iterator j = MainWindow::instance()->path_output.begin();
-        //rl::plan::VectorList::iterator j = ++path.begin();
-		
+
 		rl::math::Real length = 0;
-		
-        //for (; i != path.end() && j != path.end(); ++i, ++j)
+
+        std::cout << "[" << std::endl;
         for (; i != path.end() && j != MainWindow::instance()->path_output.end(); ++i, ++j)
 		{
-            //length += MainWindow::instance()->model->distance(*i, *j);
             *j << *i * 180/ M_PI;
+            std::cout << *j << std::endl;
 		}
+        std::cout << "]" << std::endl;
 
 		benchmark << ",";
 		benchmark << length;
@@ -298,7 +298,7 @@ Thread::run()
 	
 	if (solved)
 	{
-        if (this->swept)
+        if (this-swept)
 		{
 			this->drawSweptVolume(path);
 			return;

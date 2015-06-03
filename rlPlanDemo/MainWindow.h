@@ -161,8 +161,6 @@ public slots:
     void initStartPos(rl::math::Vector start);
 
     void initGoalPos(rl::math::Vector goal);
-
-    void load(const QString& filename);
 	
 protected:
 	MainWindow(QWidget* parent = NULL, Qt::WindowFlags f = 0);
@@ -176,7 +174,7 @@ private:
 	
 	void init();
 	
-    //void load(const QString& filename);
+    void load(const QString& filename);
 	
 	ConfigurationDelegate* configurationDelegate;
 	
