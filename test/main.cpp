@@ -47,47 +47,37 @@ int main()
     }
     file.close();
 
+    // удаляем значение обоьщеных координат
+    QDomNodeList elems = doc.elementsByTagName("q");
+    int n = elems.count();
 
-    QDomNodeList nodes = doc.elementsByTagName("q");
-    qDebug() << nodes.count();
-    for (int i = 0; i < nodes.count(); ++i)
+    if (!elems.isEmpty())
     {
-            QDomNode node = nodes.at(i).toElement();
-            if (!node.isNull())
-            {
-                qDebug() << node.toElement();
-            }
+        for (int i = 0; i < n;  i++){
+             QDomElement el = elems.at(i).toElement();
+             qDebug() << el.toElement().text();
+             el.removeChild(el.firstChild());
+        }
     }
 
-//    QDomNodeList elems = doc.elementsByTagName("goal");
-//    if (!elems.isEmpty())
-//    {
-//        QDomElement el = elems.at(0).toElement();
-//        QDomNode child = el.firstChild();
+    if (!elems.isEmpty())
+    {
+        for (int i = 0; i < n; i++){
+             QDomElement el = elems.at(i).toElement();
+             qDebug() << el.toElement().text();
 
-//        while (!child.isNull()) {
-//                qDebug() << child.toElement().text();
-
-//                // create a new node with a QDomText child
-//                QDomElement newNodeTag = doc.createElement(QString("q"));
-//                newNodeTag.setAttribute("unit","deg");
-//                QDomText newNodeText = doc.createTextNode(QString("8"));
-//                newNodeTag.appendChild(newNodeText);
-
-//                // replace existing node with new node
-//                el.replaceChild(newNodeTag, child.toElement());
-//                child = child.nextSiblingElement("q");
-//        }
-
-//    }
+             QDomText newNodeText = doc.createTextNode(QString("5"));
+             el.appendChild(newNodeText);
+        }
+    }
 
     QByteArray xml = doc.toByteArray();
     QFile fileOut(fileName);
     if (!fileOut.open(QIODevice::WriteOnly))
-       {
+    {
            std::cerr << "Error: Cannot write file " << std::endl;
            return 0;
-       }
+    }
 
     fileOut.write(xml);
     file.close();
