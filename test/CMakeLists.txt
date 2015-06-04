@@ -22,14 +22,17 @@ endif(CMAKE_SIZEOF_VOID_P EQUAL 4)
 set( QT_USE_XML TRUE)
 include( ${QT_USE_FILE} )
 
+         set(
+                HDRS
+        )
+
         set(
                 SRCS
                 main.cpp
         )
-
-
         add_executable(
                 test
+                ${HDRS}
                 ${SRCS}
         )
 

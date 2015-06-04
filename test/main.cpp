@@ -4,34 +4,55 @@
 
 using namespace std;
 
+int updateXML(QString fileName);
+QByteArray initProcess(QString appPlanePath, QString filePlanePath);
+
 int main()
 {
-//    QProcess process;
-//    process.start("/home/user/rlPlanPath/rlPlanDemo/bin/rlPlanDemo", QStringList() << "/home/user/rlPlanPath/kuka_kr_10_r1100_sixx/rlplan/kuka_kr10_r1100_sixx.xml" << "--enable-quit" << "--disable-viewer" << "--disable-wait" << "--height=1 --width=1");
+    QByteArray path;
+    if (updateXML("/home/user/rlPlanPath/test/kuka_kr10_r1100_sixx.xml"))
+    {
+       path = initProcess("/home/user/rlPlanPath/rlPlanDemo/bin/rlPlanDemo", "/home/user/rlPlanPath/kuka_kr_10_r1100_sixx/rlplan/kuka_kr10_r1100_sixx.xml");
+    } else {
+        std::cerr << "Error: Cannot update xml file " << std::endl;
+        return 0;
+    }
 
-//    // Wait for it to start
-//    if(!process.waitForStarted())
-//        return 0;
+    for (int i = 0; i < path.size(); i++){
+        cout << path[i];
+    }
+    return 0;
+}
+QByteArray initProcess(QString appPlanePath, QString filePlanePath){
 
-//    // Continue reading the data until EOF reached
-//    QByteArray data;
+    QProcess process;
+    process.start(appPlanePath, QStringList() << filePlanePath << "--enable-quit" << "--disable-viewer" << "--disable-wait" << "--height=1 --width=1");
 
-//    while(process.waitForReadyRead())
-//        data.append(process.readAll());
+    if(!process.waitForStarted())
+    {
+        std::cerr << "Error: Cannot launch PlanePath application  " << std::endl;
+        return 0;
+    }
 
-//    // Output the data
+    QByteArray data;
+    while(process.waitForReadyRead())
+        data.append(process.readAll());
+
 //    qDebug(data.data());
 //    qDebug("Done!");
 
-//    int begin = data.indexOf("[");
-//    int end = data. lastIndexOf("]");
+    int begin = data.indexOf("[");
+    int end = data. lastIndexOf("]");
 
-//    for (int i = begin+1; i < end; ++i){
-//        cout << data[i];
-//    }
+    QByteArray result;
+    for (int i = begin+1, j = -1; i < end; ++i, ++j){
+        result[j] = data[i];
+    }
+    return result;
+}
 
+int updateXML(QString fileName){
 
-    QString fileName = "/home/user/rlPlanPath/test/kuka_kr10_r1100_sixx.xml";
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         {
@@ -47,28 +68,24 @@ int main()
     }
     file.close();
 
-    // удаляем значение обоьщеных координат
     QDomNodeList elems = doc.elementsByTagName("q");
     int n = elems.count();
 
     if (!elems.isEmpty())
     {
+        // удаляем значение обобщеных координат
         for (int i = 0; i < n;  i++){
              QDomElement el = elems.at(i).toElement();
-             qDebug() << el.toElement().text();
              el.removeChild(el.firstChild());
         }
     }
 
-    if (!elems.isEmpty())
+    // записываем свои значения обобщеных координат
+    for (int i = 0; i < n; i++)
     {
-        for (int i = 0; i < n; i++){
              QDomElement el = elems.at(i).toElement();
-             qDebug() << el.toElement().text();
-
              QDomText newNodeText = doc.createTextNode(QString("5"));
              el.appendChild(newNodeText);
-        }
     }
 
     QByteArray xml = doc.toByteArray();
@@ -83,6 +100,5 @@ int main()
     file.close();
     fileOut.close();
 
-    return 0;
+    return 1;
 }
-
