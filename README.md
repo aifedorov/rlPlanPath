@@ -1,2 +1,2 @@
 # rlPlanPath
-Plan path for kuka kr10 r1100 sixx
+Application for planning moving trajectory for manipulator kuka kr10 r1100 sixx.
